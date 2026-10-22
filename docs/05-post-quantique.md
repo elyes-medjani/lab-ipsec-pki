@@ -40,10 +40,10 @@ Ce qui fait qu'un attaquant doit casser **les deux** pour retrouver les clés :
   - si l'ordinateur quantique arrive --> le DH tombe, mais ML-KEM tient ;
   - si on trouve un jour une vulnérabilité dans ML-KEM (c'est un algo récent) --> le DH classique tient encore.
 
-  > [!NOTE]
-  > Un **KEM** (Key Encapsulation Mechanism) est un mécanisme basé sur un échange asymétrique : l'un envoie sa clé publique, l'autre s'en sert pour "encapsuler" un secret aléatoire et renvoie le résultat, et seul le propriétaire de la clé privée peut le "désencapsuler". À la fin, les deux ont le même secret, comme avec un DH.
-  >
-  > **ML-KEM** repose sur des problèmes de **réseaux euclidiens**, et aucun algorithme quantique connu à ce jour ne peut le casser.
+> [!NOTE]
+> Un **KEM** (Key Encapsulation Mechanism) est un mécanisme basé sur un échange asymétrique : l'un envoie sa clé publique, l'autre s'en sert pour "encapsuler" un secret aléatoire et renvoie le résultat, et seul le propriétaire de la clé privée peut le "désencapsuler". À la fin, les deux ont le même secret, comme avec un DH.
+>
+> **ML-KEM** repose sur des problèmes de **réseaux euclidiens**, et aucun algorithme quantique connu à ce jour ne peut le casser.
   
 ### Pourquoi un échange en plus ?
 
@@ -64,10 +64,10 @@ Cependant, l'authentification n'a **pas encore de standard**. Il faudrait des ce
 
 ## Et sur le lab ?
 
-  - La proposition actuelle c'est `aes256gcm16-prfsha384-ecp384` : du classique. AES-256 et SHA-384 c'est bon mais l'échange de clés en ECP-384 seul est **exposé au store-now, decrypt-later**.
-  - La cible ce serait `aes256gcm16-prfsha384-ecp384-ke1_mlkem768` (`ke1_` = un échange de clés en plus, ML-KEM-768).
+  - Au départ la proposition c'était `aes256gcm16-sha384-ecp384` : du classique. AES-256 et SHA-384 c'est bon mais l'échange de clés en ECP-384 seul est **exposé au store-now, decrypt-later**.
+  - Maintenant le tunnel tourne en **hybride** : `aes256gcm16-sha384-ecp384-ke1_mlkem768` (`ke1_` = un échange de clés en plus --> ML-KEM-768).
   - **ADM01** tourne avec strongSwan 6.1 qui supporte ML-KEM.
-  - Sur **fw01**, `swanctl --list-algs` montre bien ML-KEM mais **l'interface web d'OPNsense 26.7 ne permet pas encore de le sélectionner** dans les propositions.
+  - Sur **fw01**, `swanctl --list-algs` montre bien ML-KEM mais **l'interface web d'OPNsense 26.7 ne permet pas encore de le sélectionner**. Donc j'ai écrit la connexion à la main dans un fichier `conf.d`.
 
 > [!NOTE]
-> Le moteur est prêt des deux côtés c'est juste l'interface du pare-feu qui suit pas encore. La démo avec IKE_INTERMEDIATE dans Wireshark viendra plus tard.
+> La démo complète (config, pièges rencontrés et analyse Wireshark avec IKE_INTERMEDIATE) est dans [Démo : l'échange de clés hybride ML-KEM](07-demo-hybride.md).
