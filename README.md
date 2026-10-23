@@ -41,7 +41,6 @@ Pour comprendre :
 5. [Post-quantique](docs/05-post-quantique.md) : la fiche ANSSI et l'état actuel
 6. [Clé de sécurité](docs/06-yubikey.md) : usage de clé matérielle de sécurité
 
-## Limites et suite
+## Limite
 
 - Dans ce lab, la clé privée du poste d'administration est un simple fichier. La version avec la clé sur une YubiKey est documentée dans [docs/06-yubikey.md](docs/06-yubikey.md).
-- Prochaines étapes : la démonstration de l'échange de clés hybride avec ML-KEM.
